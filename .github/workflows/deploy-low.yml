@@ -2,17 +2,17 @@ name: Call remote Golang Workflow
 
 on:
   push:
-    branches: ["master"]
+    branches: ["main"]
     paths:
     - 'CHANGELOG.md'
   pull_request: 
-    branches: ["master"]
+    branches: ["main"]
     paths:
     - 'CHANGELOG.md'
 
 jobs:
   Validate-tag:
-    runs-on: [self-hosted, tools-low-dind]
+    runs-on: [ubuntu-20.04]
     outputs: 
       app_version: ${{ steps.app_version.outputs.new_version }}
     steps:
@@ -27,7 +27,7 @@ jobs:
       
   pr_dispatch:
     if: ${{ github.event_name == 'pull_request' }}
-    runs-on: [self-hosted, tools-low-dind]
+    runs-on: [ubuntu-20.04]
     needs: [Validate-tag]
     steps:
       - name: Dump GitHub context
@@ -36,7 +36,7 @@ jobs:
 
   push_dispatch:
     if: ${{ github.event_name == 'push' }}
-    runs-on: [self-hosted, tools-low-dind]
+    runs-on: [ubuntu-20.04]
     needs: [Validate-tag]
     steps:
       - name: Dump GitHub context
