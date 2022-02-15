@@ -3,7 +3,7 @@ CHANGELOG (Remember tagging version number in the correct format)
 =========
 
 # 0.0.2
-Damian Leys - test tag validation
+Damian Leys - branch is main
 
 # 0.0.1
 Damian Leys - test tag validation
