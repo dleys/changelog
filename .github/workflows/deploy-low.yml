@@ -12,7 +12,7 @@ on:
 
 jobs:
   Validate-tag:
-    runs-on: [self-hosted, tools-low-dind]
+    runs-on: [ubuntu]
     outputs: 
       app_version: ${{ steps.app_version.outputs.new_version }}
     steps:
@@ -27,7 +27,7 @@ jobs:
       
   pr_dispatch:
     if: ${{ github.event_name == 'pull_request' }}
-    runs-on: [self-hosted, tools-low-dind]
+    runs-on: [ubuntu]
     needs: [Validate-tag]
     steps:
       - name: Dump GitHub context
@@ -36,7 +36,7 @@ jobs:
 
   push_dispatch:
     if: ${{ github.event_name == 'push' }}
-    runs-on: [self-hosted, tools-low-dind]
+    runs-on: [ubuntu]
     needs: [Validate-tag]
     steps:
       - name: Dump GitHub context
