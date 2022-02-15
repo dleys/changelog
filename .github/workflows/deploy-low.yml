@@ -1,0 +1,44 @@
+name: Call remote Golang Workflow
+
+on:
+  push:
+    branches: ["master"]
+    paths:
+    - 'CHANGELOG.md'
+  pull_request: 
+    branches: ["master"]
+    paths:
+    - 'CHANGELOG.md'
+
+jobs:
+  Validate-tag:
+    runs-on: [self-hosted, tools-low-dind]
+    outputs: 
+      app_version: ${{ steps.app_version.outputs.new_version }}
+    steps:
+      - name: Get project
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Versioning
+        id: app_version
+        run: ./.github/scripts/version_validation.sh
+      
+  pr_dispatch:
+    if: ${{ github.event_name == 'pull_request' }}
+    runs-on: [self-hosted, tools-low-dind]
+    needs: [Validate-tag]
+    steps:
+      - name: Dump GitHub context
+        id: github_context_step
+        run: echo '${{ toJSON(github) }}'
+
+  push_dispatch:
+    if: ${{ github.event_name == 'push' }}
+    runs-on: [self-hosted, tools-low-dind]
+    needs: [Validate-tag]
+    steps:
+      - name: Dump GitHub context
+        id: github_context_step
+        run: echo '${{ toJSON(github) }}'
