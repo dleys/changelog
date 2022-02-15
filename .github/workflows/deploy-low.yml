@@ -21,6 +21,10 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Dump GitHub context
+        id: github_context_step
+        run: echo '${{ toJSON(github) }}'
+
       - name: Versioning
         id: app_version
         run: ./.github/scripts/version_validation.sh
@@ -30,15 +34,13 @@ jobs:
     runs-on: [ubuntu-20.04]
     needs: [Validate-tag]
     steps:
-      - name: Dump GitHub context
-        id: github_context_step
-        run: echo '${{ toJSON(github) }}'
+      - name: pr
+        run: echo "pr"
 
   push_dispatch:
     if: ${{ github.event_name == 'push' }}
     runs-on: [ubuntu-20.04]
     needs: [Validate-tag]
     steps:
-      - name: Dump GitHub context
-        id: github_context_step
-        run: echo '${{ toJSON(github) }}'
+      - name: push
+        run: echo "push"
